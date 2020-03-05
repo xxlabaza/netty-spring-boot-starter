@@ -1,0 +1,9 @@
+
+xxlabaza.netty.server:
+  bind: 9990
+
+second.server:
+  bind: 9901
+
+third.server:
+  bind: 9902

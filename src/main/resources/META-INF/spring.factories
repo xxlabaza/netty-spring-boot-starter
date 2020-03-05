@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.xxlabaza.utils.netty.config.NettyCommonAutoConfiguration, \
+  com.xxlabaza.utils.netty.config.server.NettyServerAutoConfiguration, \
+  com.xxlabaza.utils.netty.config.client.NettyClientAutoConfiguration

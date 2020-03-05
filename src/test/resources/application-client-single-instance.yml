@@ -1,0 +1,4 @@
+
+xxlabaza.netty.client:
+  connect: 4775
+  auto-connect: false

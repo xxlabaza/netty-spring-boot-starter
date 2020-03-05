@@ -1,0 +1,12 @@
+
+xxlabaza.netty.client:
+  connect: 9990
+  auto-connect: false
+
+second.client:
+  connect: 9901
+  auto-connect: false
+
+third.client:
+  connect: 9902
+  auto-connect: false
