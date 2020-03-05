@@ -1,0 +1,30 @@
+
+os: linux
+
+language: java
+jdk:
+  - openjdk8
+
+install:
+  ./mvnw compile -B -U
+
+script:
+  ./mvnw install -B
+
+before_deploy:
+  - ./mvnw help:evaluate -N -Dexpression=project.version | grep -v '\['
+  - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version | grep -v '\[')
+
+deploy:
+  provider: releases
+  api_key:
+    secure: E1Roc001ORnoJadqLbp/l0vfs9cBkWcvAh28IH5AlZ+pHsfCVBUFNmXQEr90uWCv1XzWB8BMs8dNX6Bjci4noqvRofSHccTig3M/pZkfkDmWIlBRntyPC8tZTn40EAzAQLGGnbfPb958ppVqrtdhz8cx+oVIsPxObVnENLn9S6jXaaWiRVw8X+dSZekLbjDs942HKUCEzRD2JlMaH+c6O2R6FZ/b5hGjQy82kFqTsXzODq2VWWK3kd/g2GAQlk5bRzt4510MuFHZySheNPHbehtDhG7T+0dakdDOrYjhWeNO3PEI3X9I886aTaNPxD27yADqYWhM/hNybkqk3GtcOL8YdUHO/3eRy52hZaboRFxsW6Vrebl7s6GqtNfZqWgwoMppCudxlGvNICQmG5refeJXDMQ0MuHHZxY/F3vWS3j5sW1W1kYJEyI5+jGGPCobCYQnCNNE1v1lCqZiG3x1s9rIpRr8Mpig3gpYz++93GQ7JmvuRBgl6obIF6vOrMM/DaUEylcFyeErdHyoNVkl8rsw5uNnkxP0rcxoEPmrt7Cdsk9lV7CllrvpgmqXflpfP6pzDJUWPrHpHRAD57QJtCQ3NcFxij3NC0pgf9HUbLSL2CiPaM5K7g2WpGsAQJXgzNDrKpVbjtx8qUioh57kcdx4xkXPq+FZ485rEAt8L2I=
+  file:
+    - "target/netty-spring-boot-starter-$project_version.jar"
+    - "target/netty-spring-boot-starter-$project_version-javadoc.jar"
+    - "target/netty-spring-boot-starter-$project_version-sources.jar"
+  cleanup: false
+  on:
+    tags: true
+    repo: xxlabaza/netty-spring-boot-starter
+  name: $project_version
