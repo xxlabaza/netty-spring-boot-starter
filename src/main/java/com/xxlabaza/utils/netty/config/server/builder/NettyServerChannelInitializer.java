@@ -16,13 +16,87 @@
 
 package com.xxlabaza.utils.netty.config.server.builder;
 
+import static lombok.AccessLevel.PRIVATE;
+
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
- * A marker class for easy default server context initializing.
+ * A marker delegate class for easy default server context initializing.
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAnyMethod")
-public abstract class NettyServerChannelInitializer extends ChannelInitializer<SocketChannel> {
+@RequiredArgsConstructor
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public class NettyServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
+  ChannelInitializer<SocketChannel> delegate;
+
+  /**
+   * The constructor for inheritance purposes.
+   */
+  protected NettyServerChannelInitializer () {
+    this(null);
+  }
+
+  @Override
+  public void handlerAdded (ChannelHandlerContext context) throws Exception {
+    delegate.handlerAdded(context);
+  }
+
+  @Override
+  public void handlerRemoved (ChannelHandlerContext context) throws Exception {
+    delegate.handlerRemoved(context);
+  }
+
+  @Override
+  public void exceptionCaught (ChannelHandlerContext context, Throwable cause) throws Exception {
+    delegate.exceptionCaught(context, cause);
+  }
+
+  @Override
+  public void channelUnregistered (ChannelHandlerContext context) throws Exception {
+    delegate.channelUnregistered(context);
+  }
+
+  @Override
+  public void channelActive (ChannelHandlerContext context) throws Exception {
+    delegate.channelActive(context);
+  }
+
+  @Override
+  public void channelInactive (ChannelHandlerContext context) throws Exception {
+    delegate.channelInactive(context);
+  }
+
+  @Override
+  public void channelRead (ChannelHandlerContext context, Object message) throws Exception {
+    delegate.channelRead(context, message);
+  }
+
+  @Override
+  public void channelReadComplete (ChannelHandlerContext context) throws Exception {
+    delegate.channelReadComplete(context);
+  }
+
+  @Override
+  public void userEventTriggered (ChannelHandlerContext context, Object event) throws Exception {
+    delegate.userEventTriggered(context, event);
+  }
+
+  @Override
+  public void channelWritabilityChanged (ChannelHandlerContext context) throws Exception {
+    delegate.channelWritabilityChanged(context);
+  }
+
+  @Override
+  public boolean isSharable () {
+    return delegate.isSharable();
+  }
+
+  @Override
+  protected void initChannel (SocketChannel socketChannel) throws Exception {
+    // nothing
+  }
 }

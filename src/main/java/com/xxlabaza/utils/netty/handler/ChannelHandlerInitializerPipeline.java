@@ -21,6 +21,9 @@ import static lombok.AccessLevel.PRIVATE;
 
 import java.util.Collection;
 
+import com.xxlabaza.utils.netty.config.client.builder.NettyClientChannelInitializer;
+import com.xxlabaza.utils.netty.config.server.builder.NettyServerChannelInitializer;
+
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -29,17 +32,37 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
 
-@AllArgsConstructor(access = PRIVATE)
+@AllArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class ChannelHandlerInitializerPipeline extends ChannelInitializer<SocketChannel> {
 
-  public static ChannelInitializer<SocketChannel> of (ChannelHandler... handlers) {
+  public static ChannelInitializer<SocketChannel> pipelineOf (ChannelHandler... handlers) {
     val collection = asList(handlers);
-    return new ChannelHandlerInitializerPipeline(collection);
+    return pipelineOf(collection);
   }
 
-  public static ChannelInitializer<SocketChannel> of (Collection<ChannelHandler> handlers) {
+  public static ChannelInitializer<SocketChannel> pipelineOf (Collection<ChannelHandler> handlers) {
     return new ChannelHandlerInitializerPipeline(handlers);
+  }
+
+  public static NettyClientChannelInitializer clientPipeline (ChannelHandler... handlers) {
+    val collection = asList(handlers);
+    return clientPipeline(collection);
+  }
+
+  public static NettyClientChannelInitializer clientPipeline (Collection<ChannelHandler> handlers) {
+    val delegate = pipelineOf(handlers);
+    return new NettyClientChannelInitializer(delegate);
+  }
+
+  public static NettyServerChannelInitializer serverPipeline (ChannelHandler... handlers) {
+    val collection = asList(handlers);
+    return serverPipeline(collection);
+  }
+
+  public static NettyServerChannelInitializer serverPipeline (Collection<ChannelHandler> handlers) {
+    val delegate = pipelineOf(handlers);
+    return new NettyServerChannelInitializer(delegate);
   }
 
   @NonNull

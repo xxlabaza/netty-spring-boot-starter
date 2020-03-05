@@ -16,8 +16,9 @@
 
 package com.xxlabaza.utils.netty.server.substitution;
 
+import static com.xxlabaza.utils.netty.handler.ChannelHandlerInitializerPipeline.pipelineOf;
+
 import com.xxlabaza.utils.netty.ApplicationContextHolder;
-import com.xxlabaza.utils.netty.handler.ChannelHandlerInitializerPipeline;
 
 import io.appulse.utils.Bytes;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -41,7 +42,7 @@ class TestConfiguration {
 
   @Bean
   ChannelInitializer<SocketChannel> myServerChannelInititalizer () {
-    return ChannelHandlerInitializerPipeline.of(new HelloHandler());
+    return pipelineOf(new HelloHandler());
   }
 
   @Sharable

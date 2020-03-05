@@ -23,28 +23,44 @@ import com.xxlabaza.utils.netty.NettyServer;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.ContextStoppedEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.core.PriorityOrdered;
 
 @Slf4j
-class NettyServersApplicationListener {
+class NettyServersApplicationListener implements ApplicationListener<ApplicationContextEvent>, PriorityOrdered {
 
   @Autowired(required = false)
   List<NettyServer> servers;
 
-  @EventListener
-  void handle (ContextRefreshedEvent event) {
+  @Override
+  public int getOrder () {
+    return HIGHEST_PRECEDENCE;
+  }
+
+  @Override
+  public void onApplicationEvent (ApplicationContextEvent event) {
+    if (event instanceof ContextRefreshedEvent || event instanceof ContextStartedEvent) {
+      start();
+    } else if (event instanceof ContextClosedEvent || event instanceof ContextStoppedEvent) {
+      stop();
+    }
+  }
+
+  void start () {
     if (servers == null) {
+      log.warn("didn't find any netty server bean");
       return;
     }
 
     for (val server : servers) {
       val properties = server.getProperties();
       if (server.isRunning() || properties.isAutoStart() == false) {
-        return;
+        continue;
       }
 
       log.info("starting {}", server);
@@ -52,8 +68,7 @@ class NettyServersApplicationListener {
     }
   }
 
-  @EventListener
-  void handle (ContextClosedEvent event) {
+  void stop () {
     if (servers == null) {
       return;
     }
@@ -66,15 +81,5 @@ class NettyServersApplicationListener {
       log.info("closing {}", server);
       server.close();
     }
-  }
-
-  @EventListener
-  void handle (ContextStartedEvent event) {
-    handle((ContextRefreshedEvent) null);
-  }
-
-  @EventListener
-  void handle (ContextStoppedEvent event) {
-    handle((ContextClosedEvent) null);
   }
 }

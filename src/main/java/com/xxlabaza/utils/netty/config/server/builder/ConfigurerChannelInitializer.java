@@ -16,6 +16,7 @@
 
 package com.xxlabaza.utils.netty.config.server.builder;
 
+import static com.xxlabaza.utils.netty.handler.ChannelHandlerInitializerPipeline.pipelineOf;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
@@ -23,7 +24,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 import com.xxlabaza.utils.netty.config.BuildContextConfigurer;
-import com.xxlabaza.utils.netty.handler.ChannelHandlerInitializerPipeline;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
@@ -72,6 +72,6 @@ class ConfigurerChannelInitializer implements BuildContextConfigurer<NettyServer
   private ChannelInitializer<SocketChannel> create (NettyServerBuildContext context) {
     val handlers = context.getBeansOfType(ChannelHandler.class);
     Collections.sort(handlers, AnnotationAwareOrderComparator.INSTANCE);
-    return ChannelHandlerInitializerPipeline.of(handlers);
+    return pipelineOf(handlers);
   }
 }

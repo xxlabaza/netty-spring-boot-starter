@@ -53,7 +53,8 @@ class ConfigurerNettyClientProperties implements BuildContextConfigurer<NettyCli
   }
 
   private Optional<NettyClientProperties> fromConfig (NettyClientBuildContext context) {
-    return ofNullable(context.config.getProperties());
+    val result = context.config.getProperties();
+    return ofNullable(result);
   }
 
   private Optional<NettyClientProperties> fromEnvironment (NettyClientBuildContext context) {

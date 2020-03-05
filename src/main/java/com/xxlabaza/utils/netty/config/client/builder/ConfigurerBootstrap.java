@@ -68,8 +68,8 @@ class ConfigurerBootstrap implements BuildContextConfigurer<NettyClientBuildCont
   }
 
   private Optional<Bootstrap> fromContext (NettyClientBuildContext context) {
-    val properties = context.getBean(Bootstrap.class);
-    return ofNullable(properties);
+    val result = context.getBean(Bootstrap.class);
+    return ofNullable(result);
   }
 
   private Bootstrap create (NettyClientBuildContext context) {
