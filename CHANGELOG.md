@@ -8,3 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [Tags on this repository](https://github.com/appulse-projects/utils-java/tags)
 
 ## [Unreleased]
+
+## [1.0.0](https://github.com/xxlabaza/netty-spring-boot-starter/releases/tag/1.0.0) - 2020-03-06
+
+Initial release.
